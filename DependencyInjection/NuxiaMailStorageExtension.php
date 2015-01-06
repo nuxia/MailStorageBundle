@@ -24,6 +24,7 @@ class NuxiaMailStorageExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $this->loadDoctrine($config, $container, $loader);
+        $loader->load('default.yml');
     }
 
     /**
