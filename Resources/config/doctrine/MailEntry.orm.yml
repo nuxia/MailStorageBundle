@@ -1,0 +1,64 @@
+Nuxia\MailStorageBundle\Entity\MailEntry:
+    type: "entity"
+    table: "mail_entry"
+    repositoryClass: "Nuxia\MailStorageBundle\Repository\MailEntryRepository"
+    id:
+        id:
+            type: "integer"
+            generator:
+                strategy: "AUTO"
+    fields:
+        object:
+            type: "string"
+            length: "32"
+            nullable: true
+        objectId:
+            type: "integer"
+            nullable: true
+            column: "object_id"
+        language:
+            type: "string"
+            length: "32"
+        header:
+            type: "text"
+        from:
+            type: "simple_array"
+        to:
+            type: "simple_array"
+        cc:
+            type: "simple_array"
+            nullable: true
+        bcc:
+            type: "simple_array"
+            nullable: true
+        subject:
+            type: "string"
+            length: "255"
+        content:
+            type: "text"
+        contentText:
+            type: "text"
+            column: "content_text"
+        status:
+            type: "string"
+            length: "32"
+        createdAt:
+            type: "datetime"
+            column: "created_at"
+        sentAt:
+            type: "datetime"
+            column: "sent_at"
+    indexes:
+        mle_id_i:
+            columns: "id"
+        mle_language_i:
+            columns: "language"
+        mle_subject_i:
+            columns: "subject"
+        mle_status_i:
+            columns: "status"
+        mle_created_att_i:
+            columns: "created_at"
+        mle_sent_at_i:
+            columns: "sent_at"
+    lifecycleCallbacks: {  }

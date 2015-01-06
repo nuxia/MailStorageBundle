@@ -1,0 +1,14 @@
+{
+    "name": "nuxia/mail-storage-bundle",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "description": "Bundle to store your sent mail",
+    "autoload": {
+        "psr-4": { "Nuxia\\Bundle\\MailStorageBundle": ""}
+    },
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.3",
+        "doctrine/orm": "~2.4"
+    }
+}
