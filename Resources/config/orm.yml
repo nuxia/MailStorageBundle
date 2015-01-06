@@ -1,0 +1,6 @@
+services:
+    nuxia.mail_storage.doctrine.object_manager":
+        class:  "Doctrine\ORM\EntityManager"
+        public: false
+        factory_service: "doctrine"
+        factory_method: "getManager"

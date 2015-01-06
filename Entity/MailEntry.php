@@ -1,6 +1,6 @@
 <?php
 
-namespace AQF\CoreBundle\Entity;
+namespace Nuxia\MailStorageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -84,9 +84,6 @@ class MailEntry
      */
     private $sentAt;
 
-    /**
-     * __construct
-     */
     public function __construct()
     {
         $this->createdAt = new \Datetime();
@@ -101,7 +98,7 @@ class MailEntry
     }
 
     /**
-     * @param string $object
+     * @param  string $object
      *
      * @return MailEntry
      */
@@ -121,7 +118,7 @@ class MailEntry
     }
 
     /**
-     * @param integer $objectId
+     * @param  integer $objectId
      *
      * @return MailEntry
      */
@@ -141,7 +138,7 @@ class MailEntry
     }
 
     /**
-     * @param string $language
+     * @param  string $language
      *
      * @return MailEntry
      */
@@ -161,7 +158,7 @@ class MailEntry
     }
 
     /**
-     * @param string $header
+     * @param  string $header
      *
      * @return MailEntry
      */
@@ -181,7 +178,7 @@ class MailEntry
     }
 
     /**
-     * @param array $from
+     * @param  array $from
      *
      * @return MailEntry
      */
@@ -201,7 +198,7 @@ class MailEntry
     }
 
     /**
-     * @param array $to
+     * @param  array $to
      *
      * @return MailEntry
      */
@@ -221,7 +218,7 @@ class MailEntry
     }
 
     /**
-     * @param array $cc
+     * @param  array $cc
      *
      * @return MailEntry
      */
@@ -241,7 +238,7 @@ class MailEntry
     }
 
     /**
-     * @param array $bcc
+     * @param  array $bcc
      *
      * @return MailEntry
      */
@@ -261,7 +258,7 @@ class MailEntry
     }
 
     /**
-     * @param string $subject
+     * @param  string $subject
      *
      * @return MailEntry
      */
@@ -281,7 +278,7 @@ class MailEntry
     }
 
     /**
-     * @param string $content
+     * @param  string $content
      *
      * @return MailEntry
      */
@@ -301,7 +298,7 @@ class MailEntry
     }
 
     /**
-     * @param string $contentText
+     * @param  string $contentText
      *
      * @return MailEntry
      */
@@ -321,7 +318,7 @@ class MailEntry
     }
 
     /**
-     * @param string $status
+     * @param  string $status
      *
      * @return MailEntry
      */
@@ -341,7 +338,7 @@ class MailEntry
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param  \DateTime $createdAt
      *
      * @return MailEntry
      */
@@ -361,7 +358,7 @@ class MailEntry
     }
 
     /**
-     * @param \DateTime $sentAt
+     * @param  \DateTime $sentAt
      *
      * @return MailEntry
      */
@@ -379,6 +376,4 @@ class MailEntry
     {
         return $this->sentAt;
     }
-
-
 }
