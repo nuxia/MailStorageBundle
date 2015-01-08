@@ -2,21 +2,25 @@
 
 namespace Nuxia\MailStorageBundle\Storage;
 
-use Nuxia\MailStorageBundle\Doctrine\MailEntryManager;
-
 class StoragePlugin implements \Swift_Events_SendListener
 {
     /**
-     * @var MailEntryManager
+     * @var StorageManagerInterface
      */
-    private $mailEntryManager;
+    private $storageManager;
 
     /**
-     * @param MailEntryManager $mailEntryManager
+     * @var string
      */
-    public function __construct(MailEntryManager $mailEntryManager)
+    private $defaultLocale;
+
+    /**
+     * @param StorageManagerInterface $storageManager
+     */
+    public function __construct(StorageManagerInterface $storageManager, $defaultLocale)
     {
-        $this->mailEntryManager = $mailEntryManager;
+        $this->storageManager = $storageManager;
+        $this->defaultLocale = $defaultLocale;
     }
 
     /**
@@ -24,6 +28,9 @@ class StoragePlugin implements \Swift_Events_SendListener
      */
     public function beforeSendPerformed(\Swift_Events_SendEvent $evt)
     {
+        $mailEntry = $this->storageManager->createMailEntry();
+        $mailEntry->fromSwiftMessage($evt->getMessage(), $this->defaultLocale);
+        $this->storageManager->store($mailEntry, array('event' => 'beforeSend'));
     }
 
     /**
@@ -31,23 +38,9 @@ class StoragePlugin implements \Swift_Events_SendListener
      */
     public function sendPerformed(\Swift_Events_SendEvent $evt)
     {
-        $message = $evt->getMessage();
-
-        $mailEntry = $this->$mailEntryManager->createMailEntry();
-        $mailEntry->getFrom($message->getFrom());
-        $mailEntry->getCc($message->getCc());
-        $mailEntry->getBcc($message->getBcc());
-        $mailEntry->getFrom($message->getFrom());
-        $mailEntry->getFrom($message->getFrom());
-        $mailEntry->getHeader($message->getHeaders()->toString());
-        $mailEntry->setContent($message->getBody());
-        $mailEntry->setSubject($message->getSubject());
-        //@TODO
-        $mailEntry->setLanguage('en');
-        $mailEntry->setContentText('temp');
-
+        $mailEntry = $this->storageManager->find($evt->getMessage()->getId());
         $mailEntry->setStatus('sent');
-        $mailEntry->setSentAt(new \DateTime());
-        $this->mailEntryManager->persist($mailEntry);
+        $mailEntry->setSentAt(new \Datetime());
+        $this->storageManager->store($mailEntry, array('event' => 'send'));
     }
 }
