@@ -55,4 +55,5 @@ class StorageManager extends AbstractStorageManager
     {
         return $this->getRepository()->find($id);
     }
-} 
+}
+
