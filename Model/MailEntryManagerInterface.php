@@ -10,4 +10,9 @@ interface MailEntryManagerInterface
      * @return MailEntry
      */
     public function createMailEntry();
+
+    /**
+     * @return string
+     */
+    public function getClassName();
 }
