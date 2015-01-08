@@ -42,9 +42,10 @@ class StorageManager extends AbstractStorageManager
      */
     public function store(MailEntry $mailEntry, array $options = array())
     {
-        $this->objectManager->persist($mailEntry);
-        if (!isset($options['and_flush']) || true === $options['and_flush']) {
-            $this->objectManager->flush();
+        if ($options['event'] === 'preSend') {
+            $this->objectManager->persist($mailEntry);
+        } else {
+            $this->objectManager->flush($mailEntry);
         }
     }
 
