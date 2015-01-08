@@ -18,11 +18,15 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        //$rootNode = $treeBuilder->root('nuxia_mail_storage');
+        $rootNode = $treeBuilder->root('nuxia_mail_storage');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        //@formater:off
+        $rootNode
+            ->children()
+                ->scalarNode('type')->defaultValue('database')->cannotBeEmpty()->end()
+            ->end()
+        ->end();
+        //@formater:on
 
         return $treeBuilder;
     }
