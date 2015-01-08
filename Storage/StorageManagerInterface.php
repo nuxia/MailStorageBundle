@@ -26,4 +26,3 @@ interface StorageManagerInterface
      */
     public function find($id);
 }
- 

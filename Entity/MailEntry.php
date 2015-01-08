@@ -2,12 +2,8 @@
 
 namespace Nuxia\MailStorageBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Nuxia\MailStorageBundle\SwiftMessageUtils;
 
-/**
- * MailEntry
- */
 class MailEntry
 {
     /**
