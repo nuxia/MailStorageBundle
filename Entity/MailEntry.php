@@ -3,6 +3,7 @@
 namespace Nuxia\MailStorageBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Nuxia\MailStorageBundle\SwiftMessageUtils;
 
 /**
  * MailEntry
@@ -87,10 +88,23 @@ class MailEntry
     public function __construct()
     {
         $this->createdAt = new \Datetime();
+        $this->status = 'pending';
     }
 
     /**
-     * @return integer 
+     * @param  string $id
+     *
+     * @return MailEntry
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
      */
     public function getId()
     {
@@ -110,7 +124,7 @@ class MailEntry
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getObject()
     {
@@ -130,7 +144,7 @@ class MailEntry
     }
 
     /**
-     * @return integer 
+     * @return integer
      */
     public function getObjectId()
     {
@@ -170,7 +184,7 @@ class MailEntry
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getHeader()
     {
@@ -182,7 +196,7 @@ class MailEntry
      *
      * @return MailEntry
      */
-    public function setFrom($from)
+    public function setFrom(array $from)
     {
         $this->from = $from;
 
@@ -190,7 +204,7 @@ class MailEntry
     }
 
     /**
-     * @return array 
+     * @return array
      */
     public function getFrom()
     {
@@ -202,7 +216,7 @@ class MailEntry
      *
      * @return MailEntry
      */
-    public function setTo($to)
+    public function setTo(array $to)
     {
         $this->to = $to;
 
@@ -210,7 +224,7 @@ class MailEntry
     }
 
     /**
-     * @return array 
+     * @return array
      */
     public function getTo()
     {
@@ -218,7 +232,7 @@ class MailEntry
     }
 
     /**
-     * @param  array $cc
+     * @param  array|null $cc
      *
      * @return MailEntry
      */
@@ -230,7 +244,7 @@ class MailEntry
     }
 
     /**
-     * @return array 
+     * @return array
      */
     public function getCc()
     {
@@ -238,7 +252,7 @@ class MailEntry
     }
 
     /**
-     * @param  array $bcc
+     * @param  array|null $bcc
      *
      * @return MailEntry
      */
@@ -250,7 +264,7 @@ class MailEntry
     }
 
     /**
-     * @return array 
+     * @return array
      */
     public function getBcc()
     {
@@ -270,7 +284,7 @@ class MailEntry
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -290,7 +304,7 @@ class MailEntry
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -310,7 +324,7 @@ class MailEntry
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getContentText()
     {
@@ -330,7 +344,7 @@ class MailEntry
     }
 
     /**
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
@@ -350,7 +364,7 @@ class MailEntry
     }
 
     /**
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -370,10 +384,53 @@ class MailEntry
     }
 
     /**
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSentAt()
     {
         return $this->sentAt;
+    }
+
+    /**
+     * @param  \Swift_Message $message
+     * @param  string         $defaultLanguage
+     *
+     * @return MailEntry
+     *
+     * @throws \RuntimeException
+     */
+    public function fromSwiftMessage(\Swift_Message $message, $defaultLanguage)
+    {
+        $this->setId($message->getId());
+        $this->setSubject($message->getSubject());
+        $this->setContent($message->getBody());
+        $this->setContentText(SwiftMessageUtils::getPart($message, 'text/plain'));
+        if ($this->getContentText() === null) {
+            throw new \RuntimeException('The SwiftMessage must have a plain text content part');
+        }
+
+        $headerSet = $message->getHeaders();
+        if ($message->getHeaders()->has('Content-language')) {
+            $this->setLanguage($headerSet->get('Content-language')->getFieldBody());
+        } else {
+            $this->setLanguage($defaultLanguage);
+        }
+
+        foreach (array('cc', 'bcc', 'to', 'from') as $field) {
+            $fieldValue = $message->{'get' . ucfirst($field)}();
+            if (is_array($fieldValue) && count($fieldValue) > 0) {
+                $this->{'set' . ucfirst($field)}(SwiftMessageUtils::addressesToSimpleArray($fieldValue));
+            }
+        }
+
+        foreach (array('X-MailStorage-Object', 'X-MailStorage-ObjectId') as $headerKey) {
+            if ($headerSet->has($headerKey)) {
+                $this->{'set' . explode('-', $headerKey)[2]}($headerSet->get($headerKey)->getFieldBody());
+                $headerSet->remove($headerKey);
+            }
+        }
+        $this->setHeader($message->getHeaders()->toString());
+
+        return $this;
     }
 }

@@ -1,12 +1,12 @@
 Nuxia\MailStorageBundle\Entity\MailEntry:
     type: "entity"
     table: "mail_entry"
-    repositoryClass: "Nuxia\MailStorageBundle\Repository\MailEntryRepository"
     id:
         id:
-            type: "integer"
+            type: "string"
+            length: "32"
             generator:
-                strategy: "AUTO"
+                strategy: "NONE"
     fields:
         object:
             type: "string"
@@ -23,14 +23,18 @@ Nuxia\MailStorageBundle\Entity\MailEntry:
             type: "text"
         from:
             type: "simple_array"
+            column: "sender"
         to:
             type: "simple_array"
+            column: "recipient_to"
         cc:
             type: "simple_array"
             nullable: true
+            column: "recipient_cc"
         bcc:
             type: "simple_array"
             nullable: true
+            column: "recipient_bcc"
         subject:
             type: "string"
             length: "255"
@@ -48,6 +52,7 @@ Nuxia\MailStorageBundle\Entity\MailEntry:
         sentAt:
             type: "datetime"
             column: "sent_at"
+            nullable: true
     indexes:
         mle_id_i:
             columns: "id"
