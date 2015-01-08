@@ -1,6 +1,0 @@
-services:
-    nuxia.mail_storage.mail_entry.manager:
-        class:  "Nuxia\MailStorageBundle\Doctrine\MailEntryManager"
-        public: false
-        calls:
-            - [ "setObjectManager", [ "nuxia.mail_storage.doctrine.object_manager" ] ]

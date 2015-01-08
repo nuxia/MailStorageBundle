@@ -1,7 +1,0 @@
-services:
-    nuxia.mail_storage.storage.swiftmailer_plugin:
-        class:  "Nuxia\MailStorageBundle\Storage\StoragePlugin"
-        arguments:
-            - "@nuxia.mail_storage.mail_entry.manager"
-        tags:
-            - { name: "swiftmailer.plugin" }

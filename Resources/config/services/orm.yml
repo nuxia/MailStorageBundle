@@ -1,5 +1,5 @@
 services:
-    nuxia.mail_storage.doctrine.object_manager":
+    nuxia.mail_storage.doctrine.object_manager:
         class:  "Doctrine\ORM\EntityManager"
         public: false
         factory_service: "doctrine"

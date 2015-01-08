@@ -1,0 +1,4 @@
+services:
+    nuxia.mail_storage.mail_entry.manager:
+        class:  "Nuxia\MailStorageBundle\Model\MailEntryManager"
+        public: false

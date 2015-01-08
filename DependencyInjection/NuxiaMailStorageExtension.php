@@ -22,9 +22,10 @@ class NuxiaMailStorageExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
         $this->loadDoctrine($config, $container, $loader);
-        $loader->load('default.yml');
+        $loader->load('mail_entry.yml');
+        $this->loadStorage($config, $container, $loader);
     }
 
     /**
@@ -36,5 +37,19 @@ class NuxiaMailStorageExtension extends Extension
     {
         $loader->load('orm.yml');
         $loader->load('doctrine.yml');
+    }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     * @param YamlFileLoader   $loader
+     */
+    private function loadStorage(array $config, ContainerBuilder $container, YamlFileLoader $loader)
+    {
+        $loader->load('storage.yml');
+        $mailers = $container->getParameter('swiftmailer.mailers');
+        foreach ($mailers as $name => $mailer) {
+            $container->getDefinition('nuxia.mail_storage.storage.swiftmailer_plugin')->addTag(sprintf('swiftmailer.%s.plugin', $name));
+        }
     }
 }
