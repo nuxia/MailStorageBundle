@@ -401,8 +401,9 @@ class MailEntry
         $this->setSubject($message->getSubject());
         $this->setContent($message->getBody());
         $this->setContentText(SwiftMessageUtils::getPart($message, 'text/plain'));
-        if ($this->getContentText() === null) {
-            throw new \RuntimeException('The SwiftMessage must have a plain text content part');
+
+        if (null === $this->getContentText()) {
+            $this->setContentText($this->getContent());
         }
 
         $headerSet = $message->getHeaders();
