@@ -16,6 +16,9 @@ Nuxia\MailStorageBundle\Entity\MailEntry:
             type: "integer"
             nullable: true
             column: "object_id"
+        reference:
+            type: "string"
+            length: "255"
         language:
             type: "string"
             length: "32"
@@ -56,6 +59,8 @@ Nuxia\MailStorageBundle\Entity\MailEntry:
     indexes:
         mle_id_i:
             columns: "id"
+        mle_reference_i:
+            columns: "reference"
         mle_language_i:
             columns: "language"
         mle_subject_i:

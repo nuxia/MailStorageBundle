@@ -7,6 +7,16 @@ use Nuxia\MailStorageBundle\SwiftMessageUtils;
 class MailEntry
 {
     /**
+     * @var string
+     */
+    const STATUS_PENDING = 'pending';
+
+    /**
+     * @var string
+     */
+    const STATUS_SENT = 'sent';
+
+    /**
      * @var integer
      */
     private $id;
@@ -20,6 +30,11 @@ class MailEntry
      * @var integer
      */
     private $objectId;
+
+    /**
+     * @var string
+     */
+    private $reference;
 
     /**
      * @var string
@@ -84,7 +99,7 @@ class MailEntry
     public function __construct()
     {
         $this->createdAt = new \Datetime();
-        $this->status = 'pending';
+        $this->status = self::STATUS_PENDING;
     }
 
     /**
@@ -145,6 +160,14 @@ class MailEntry
     public function getObjectId()
     {
         return $this->objectId;
+    }
+
+    /**
+     * @param string $reference
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
     }
 
     /**

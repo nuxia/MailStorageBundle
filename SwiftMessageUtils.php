@@ -18,8 +18,8 @@ class SwiftMessageUtils
     {
         $parse = array();
         foreach ($address as $key => $value) {
-            if (null === $value) {
-                $parse[] = $key;
+            if (is_numeric($key)) {
+                $parse[] = $value;
             } else {
                 $parse[] = $value . '<' . $key . '>';
             }
