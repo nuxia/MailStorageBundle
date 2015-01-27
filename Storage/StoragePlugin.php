@@ -2,12 +2,19 @@
 
 namespace Nuxia\MailStorageBundle\Storage;
 
+use Nuxia\MailStorageBundle\Entity\MailEntry;
+
 class StoragePlugin implements \Swift_Events_SendListener
 {
     /**
      * @var StorageManagerInterface
      */
     private $storageManager;
+
+    /**
+     * @var MailEntry
+     */
+    private $mailEntry;
 
     /**
      * @var string
@@ -29,9 +36,8 @@ class StoragePlugin implements \Swift_Events_SendListener
     public function beforeSendPerformed(\Swift_Events_SendEvent $evt)
     {
         if (!$this->isSpoolTransport($evt->getTransport())) {
-            $mailEntry = $this->storageManager->createMailEntry();
-            $mailEntry->fromSwiftMessage($evt->getMessage(), $this->defaultLocale);
-            $this->storageManager->store($mailEntry, array('event' => 'beforeSend'));
+            $this->mailEntry = $this->storageManager->createMailEntry();
+            $this->mailEntry->fromSwiftMessage($evt->getMessage(), $this->defaultLocale);
         }
     }
 
@@ -41,13 +47,17 @@ class StoragePlugin implements \Swift_Events_SendListener
     public function sendPerformed(\Swift_Events_SendEvent $evt)
     {
         if (!$this->isSpoolTransport($evt->getTransport())) {
-            $mailEntry = $this->storageManager->find($evt->getMessage()->getId());
-            $mailEntry->setStatus('sent');
-            $mailEntry->setSentAt(new \Datetime());
-            $this->storageManager->store($mailEntry, array('event' => 'send'));
+            $this->mailEntry->setStatus(MailEntry::STATUS_SENT);
+            $this->mailEntry->setSentAt(new \Datetime());
+            $this->storageManager->store($this->mailEntry);
         }
     }
 
+    /**
+     * @param \Swift_Transport $transport
+     *
+     * @return bool
+     */
     private function isSpoolTransport(\Swift_Transport $transport)
     {
         return $transport instanceof \Swift_Transport_SpoolTransport;
