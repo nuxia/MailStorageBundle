@@ -18,11 +18,4 @@ interface StorageManagerInterface
      * @return MailEntry
      */
     public function store(MailEntry $mailEntry, array $options = array());
-
-    /**
-     * @param  string $id
-     *
-     * @return MailEntry
-     */
-    public function find($id);
 }

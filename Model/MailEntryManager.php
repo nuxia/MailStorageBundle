@@ -5,12 +5,16 @@ namespace Nuxia\MailStorageBundle\Model;
 class MailEntryManager implements MailEntryManagerInterface
 {
     /**
-     * {@inheritDoc}
+     * @var string
      */
-    public function createMailEntry()
+    protected $className;
+
+    /**
+     * @param string $className
+     */
+    public function setClassName($className)
     {
-        $class = $this->getClassname();
-        return new $class();
+        $this->className = $className;
     }
 
     /**
@@ -18,6 +22,15 @@ class MailEntryManager implements MailEntryManagerInterface
      */
     public function getClassName()
     {
-        return 'Nuxia\MailStorageBundle\Entity\MailEntry';
+        return $this->className;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createMailEntry()
+    {
+        $class = new $this->className();
+        return new $class();
     }
 }

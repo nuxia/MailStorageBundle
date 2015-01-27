@@ -1,3 +1,8 @@
+parameters:
+    nuxia.mail_storage.mail_entry.class: "Nuxia\MailStorageBundle\Entity\MailEntry"
+
 services:
     nuxia.mail_storage.mail_entry.manager:
         class:  "Nuxia\MailStorageBundle\Model\MailEntryManager"
+        calls:
+            - [ "setClassName", [ "%nuxia.mail_storage.mail_entry.class%" ] ]

@@ -24,7 +24,7 @@ class StorageManager extends AbstractStorageManager
     /**
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    protected function getRepository()
+    public function getRepository()
     {
         return $this->objectManager->getRepository($this->mailEntryManager->getClassName());
     }
@@ -42,19 +42,8 @@ class StorageManager extends AbstractStorageManager
      */
     public function store(MailEntry $mailEntry, array $options = array())
     {
-        if ('beforeSend' === $options['event']) {
-            $this->objectManager->persist($mailEntry);
-        } else {
-            $this->objectManager->flush($mailEntry);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function find($id)
-    {
-        return $this->getRepository()->find($id);
+        $this->objectManager->persist($mailEntry);
+        $this->objectManager->flush($mailEntry);
     }
 }
 

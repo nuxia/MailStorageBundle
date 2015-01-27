@@ -1,0 +1,9 @@
+list:
+    sender: "From"
+    recipient_to: "To"
+    recipient_cc: "Cc"
+    recipient_bcc: "Bcc"
+    subject: "Subject"
+    body: "Body"
+    sent_at: "Sent at"
+

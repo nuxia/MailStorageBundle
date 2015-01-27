@@ -9,6 +9,11 @@ class MailEntry
     /**
      * @var string
      */
+    const REFERENCE_DEFAULT = 'no-reference';
+
+    /**
+     * @var string
+     */
     const STATUS_PENDING = 'pending';
 
     /**
@@ -99,6 +104,7 @@ class MailEntry
     public function __construct()
     {
         $this->createdAt = new \Datetime();
+        $this->reference = self::REFERENCE_DEFAULT;
         $this->status = self::STATUS_PENDING;
     }
 
@@ -420,6 +426,7 @@ class MailEntry
      */
     public function fromSwiftMessage(\Swift_Message $message, $defaultLanguage)
     {
+
         $this->setId($message->getId());
         $this->setSubject($message->getSubject());
         $this->setContent($message->getBody());
@@ -443,7 +450,7 @@ class MailEntry
             }
         }
 
-        foreach (array('X-MailStorage-Object', 'X-MailStorage-ObjectId') as $headerKey) {
+        foreach (array('X-MailStorage-Object', 'X-MailStorage-ObjectId', 'X-MailStorage-Reference') as $headerKey) {
             if ($headerSet->has($headerKey)) {
                 $this->{'set' . explode('-', $headerKey)[2]}($headerSet->get($headerKey)->getFieldBody());
                 $headerSet->remove($headerKey);
