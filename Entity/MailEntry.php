@@ -9,7 +9,7 @@ class MailEntry
     /**
      * @var string
      */
-    const REFERENCE_DEFAULT = 'no-reference';
+    const REFERENCE_DEFAULT = 'system';
 
     /**
      * @var string
