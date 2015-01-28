@@ -24,6 +24,7 @@ Nuxia\MailStorageBundle\Entity\MailEntry:
             length: "32"
         header:
             type: "text"
+            nullable: true
         from:
             type: "simple_array"
             column: "sender"
