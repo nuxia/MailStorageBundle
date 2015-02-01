@@ -1,7 +1,7 @@
 <?php
 
 namespace Nuxia\MailStorageBundle\Storage;
-;
+
 use Nuxia\MailStorageBundle\Entity\MailEntry;
 
 interface StorageManagerInterface
