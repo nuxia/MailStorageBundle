@@ -426,7 +426,6 @@ class MailEntry
      */
     public function fromSwiftMessage(\Swift_Message $message, $defaultLanguage)
     {
-
         $this->setId($message->getId());
         $this->setSubject($message->getSubject());
         $this->setContent($message->getBody());
