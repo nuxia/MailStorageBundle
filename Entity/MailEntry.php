@@ -177,6 +177,14 @@ class MailEntry
     }
 
     /**
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
      * @param  string $language
      *
      * @return MailEntry
