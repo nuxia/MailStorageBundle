@@ -60,6 +60,10 @@ Nuxia\MailStorageBundle\Entity\MailEntry:
     indexes:
         mle_id_i:
             columns: "id"
+        mle_object_i:
+            columns: "object"
+        mle_object_id_i:
+            columns: "object_id"
         mle_reference_i:
             columns: "reference"
         mle_language_i:
