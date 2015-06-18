@@ -4,4 +4,4 @@ services:
         parent: "nuxia.mail_storage.storage.manager.abstract"
         public: false
         calls:
-            - [ "setObjectManager", [ "@nuxia.mail_storage.doctrine.object_manager" ] ]
+            - [ "setDoctrineRegistry", [ "@doctrine" ] ]

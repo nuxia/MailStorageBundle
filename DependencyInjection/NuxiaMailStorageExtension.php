@@ -35,7 +35,6 @@ class NuxiaMailStorageExtension extends Extension
      */
     private function loadDoctrine(array $config, ContainerBuilder $container, YamlFileLoader $loader)
     {
-        $loader->load('orm.yml');
         $loader->load('doctrine.yml');
     }
 

@@ -5,20 +5,21 @@ namespace Nuxia\MailStorageBundle\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 use Nuxia\MailStorageBundle\Entity\MailEntry;
 use Nuxia\MailStorageBundle\Storage\AbstractStorageManager;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class StorageManager extends AbstractStorageManager
 {
     /**
-     * @var ObjectManager
+     * @var RegistryInterface $doctrineRegistry
      */
-    protected $objectManager;
+    protected $doctrineRegistry;
 
     /**
      * @param ObjectManager
      */
-    public function setObjectManager(ObjectManager $objectManager)
+    public function setObjectManager(RegistryInterface $doctrineRegistry)
     {
-        $this->objectManager = $objectManager;
+        $this->doctrineRegistry = $doctrineRegistry;
     }
 
     /**
@@ -26,7 +27,7 @@ class StorageManager extends AbstractStorageManager
      */
     public function getRepository()
     {
-        return $this->objectManager->getRepository($this->mailEntryManager->getClassName());
+        return $this->doctrineRegistry->getRepository($this->mailEntryManager->getClassName());
     }
 
     /**
@@ -42,8 +43,9 @@ class StorageManager extends AbstractStorageManager
      */
     public function store(MailEntry $mailEntry, array $options = array())
     {
-        $this->objectManager->persist($mailEntry);
-        $this->objectManager->flush($mailEntry);
+        $entityManager = $this->doctrineRegistry->getManager();
+        $entityManager->persist($mailEntry);
+        $entityManager->flush($mailEntry);
     }
 }
 
