@@ -2,7 +2,6 @@
 
 namespace Nuxia\MailStorageBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Nuxia\MailStorageBundle\Entity\MailEntry;
 use Nuxia\MailStorageBundle\Storage\AbstractStorageManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -15,9 +14,9 @@ class StorageManager extends AbstractStorageManager
     protected $doctrineRegistry;
 
     /**
-     * @param ObjectManager
+     * @param RegistryInterface $doctrineRegistry
      */
-    public function setObjectManager(RegistryInterface $doctrineRegistry)
+    public function setDoctrineRegistry(RegistryInterface $doctrineRegistry)
     {
         $this->doctrineRegistry = $doctrineRegistry;
     }
@@ -48,4 +47,3 @@ class StorageManager extends AbstractStorageManager
         $entityManager->flush($mailEntry);
     }
 }
-
