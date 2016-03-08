@@ -1,12 +1,12 @@
 services:
     nuxia.mail_storage.storage.manager.abstract:
-        class:  "Nuxia\MailStorageBundle\Storage\AbstractStorageManager"
+        class:  Nuxia\MailStorageBundle\Storage\AbstractStorageManager
         abstract: true
         arguments:
             - "@nuxia.mail_storage.mail_entry.manager"
 
     nuxia.mail_storage.storage.swiftmailer_plugin:
-        class:  "Nuxia\MailStorageBundle\Storage\StoragePlugin"
+        class:  Nuxia\MailStorageBundle\Storage\StoragePlugin
         arguments:
             - "@nuxia.mail_storage.storage.manager"
             - "%locale%"

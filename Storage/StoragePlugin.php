@@ -2,7 +2,7 @@
 
 namespace Nuxia\MailStorageBundle\Storage;
 
-use Nuxia\MailStorageBundle\Entity\MailEntry;
+use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
 
 class StoragePlugin implements \Swift_Events_SendListener
 {
@@ -12,7 +12,7 @@ class StoragePlugin implements \Swift_Events_SendListener
     private $storageManager;
 
     /**
-     * @var MailEntry
+     * @var AbstractMailEntry
      */
     private $mailEntry;
 
@@ -23,6 +23,7 @@ class StoragePlugin implements \Swift_Events_SendListener
 
     /**
      * @param StorageManagerInterface $storageManager
+     * @param string                  $defaultLocale
      */
     public function __construct(StorageManagerInterface $storageManager, $defaultLocale)
     {
@@ -47,7 +48,7 @@ class StoragePlugin implements \Swift_Events_SendListener
     public function sendPerformed(\Swift_Events_SendEvent $evt)
     {
         if (!$this->isSpoolTransport($evt->getTransport())) {
-            $this->mailEntry->setStatus(MailEntry::STATUS_SENT);
+            $this->mailEntry->setStatus(AbstractMailEntry::STATUS_SENT);
             $this->mailEntry->setSentAt(new \Datetime());
             $this->storageManager->store($this->mailEntry);
         }

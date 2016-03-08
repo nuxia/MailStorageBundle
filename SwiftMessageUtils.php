@@ -10,7 +10,7 @@ class SwiftMessageUtils
     }
 
     /**
-     * @param  array $address
+     * @param array $address
      *
      * @return array
      */
@@ -30,8 +30,8 @@ class SwiftMessageUtils
     }
 
     /**
-     * @param  \Swift_Message $message
-     * @param  string         $contentType
+     * @param \Swift_Message $message
+     * @param string         $contentType
      *
      * @return string|null
      */

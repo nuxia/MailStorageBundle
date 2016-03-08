@@ -4,7 +4,7 @@ namespace Nuxia\MailStorageBundle\Tests\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Nuxia\MailStorageBundle\Doctrine\StorageManager;
-use Nuxia\MailStorageBundle\Entity\MailEntry;
+use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
 
 class StorageManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,7 +26,7 @@ class StorageManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var string
      */
-    protected $className = 'Nuxia\MailStorageBundle\Entity\MailEntry';
+    protected $className = 'Nuxia\MailStorageBundle\Entity\AbstractMailEntry';
 
     public function setUp()
     {
@@ -64,7 +64,7 @@ class StorageManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testStore()
     {
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
 
         $this->objectManager->expects($this->once())
             ->method('persist')
@@ -76,3 +76,5 @@ class StorageManagerTest extends \PHPUnit_Framework_TestCase
     }
 }
 
+class DummyMailEntry extends AbstractMailEntry {
+}

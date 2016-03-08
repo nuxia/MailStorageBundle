@@ -4,7 +4,7 @@ namespace Nuxia\MailStorageBundle\Entity;
 
 use Nuxia\MailStorageBundle\SwiftMessageUtils;
 
-class MailEntry
+abstract class AbstractMailEntry
 {
     /**
      * @var string
@@ -24,7 +24,7 @@ class MailEntry
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -109,9 +109,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $id
+     * @param string $id
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setId($id)
     {
@@ -129,9 +129,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $object
+     * @param string $object
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setObject($object)
     {
@@ -149,9 +149,9 @@ class MailEntry
     }
 
     /**
-     * @param  integer $objectId
+     * @param integer $objectId
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setObjectId($objectId)
     {
@@ -185,9 +185,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $language
+     * @param string $language
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setLanguage($language)
     {
@@ -197,7 +197,7 @@ class MailEntry
     }
 
     /*
-     * @return string 
+     * @return string
      */
     public function getLanguage()
     {
@@ -205,9 +205,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $header
+     * @param string $header
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setHeader($header)
     {
@@ -225,9 +225,9 @@ class MailEntry
     }
 
     /**
-     * @param  array $from
+     * @param array $from
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setFrom(array $from)
     {
@@ -245,9 +245,9 @@ class MailEntry
     }
 
     /**
-     * @param  array $to
+     * @param array $to
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setTo(array $to)
     {
@@ -265,9 +265,9 @@ class MailEntry
     }
 
     /**
-     * @param  array|null $cc
+     * @param array|null $cc
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setCc($cc)
     {
@@ -285,9 +285,9 @@ class MailEntry
     }
 
     /**
-     * @param  array|null $bcc
+     * @param array|null $bcc
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setBcc($bcc)
     {
@@ -305,9 +305,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $subject
+     * @param string $subject
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setSubject($subject)
     {
@@ -325,9 +325,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $content
+     * @param string $content
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setContent($content)
     {
@@ -345,9 +345,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $contentText
+     * @param string $contentText
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setContentText($contentText)
     {
@@ -365,9 +365,9 @@ class MailEntry
     }
 
     /**
-     * @param  string $status
+     * @param string $status
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setStatus($status)
     {
@@ -385,9 +385,9 @@ class MailEntry
     }
 
     /**
-     * @param  \DateTime $createdAt
+     * @param \DateTime $createdAt
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setCreatedAt($createdAt)
     {
@@ -405,9 +405,9 @@ class MailEntry
     }
 
     /**
-     * @param  \DateTime $sentAt
+     * @param \DateTime $sentAt
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function setSentAt($sentAt)
     {
@@ -425,10 +425,10 @@ class MailEntry
     }
 
     /**
-     * @param  \Swift_Message $message
-     * @param  string         $defaultLanguage
+     * @param \Swift_Message $message
+     * @param string         $defaultLanguage
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      *
      * @throws \RuntimeException
      */

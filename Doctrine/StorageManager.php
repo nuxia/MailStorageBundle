@@ -2,7 +2,7 @@
 
 namespace Nuxia\MailStorageBundle\Doctrine;
 
-use Nuxia\MailStorageBundle\Entity\MailEntry;
+use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
 use Nuxia\MailStorageBundle\Storage\AbstractStorageManager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -40,7 +40,7 @@ class StorageManager extends AbstractStorageManager
     /**
      * {@inheritDoc}
      */
-    public function store(MailEntry $mailEntry, array $options = array())
+    public function store(AbstractMailEntry $mailEntry, array $options = array())
     {
         $entityManager = $this->doctrineRegistry->getManager();
         $entityManager->persist($mailEntry);

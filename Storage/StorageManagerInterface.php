@@ -2,20 +2,20 @@
 
 namespace Nuxia\MailStorageBundle\Storage;
 
-use Nuxia\MailStorageBundle\Entity\MailEntry;
+use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
 
 interface StorageManagerInterface
 {
     /**
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function createMailEntry();
 
     /**
-     * @param  MailEntry $mailEntry
-     * @param  array     $options
+     * @param AbstractMailEntry $mailEntry
+     * @param array             $options
      *
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
-    public function store(MailEntry $mailEntry, array $options = array());
+    public function store(AbstractMailEntry $mailEntry, array $options = array());
 }

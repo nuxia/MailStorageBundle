@@ -2,12 +2,12 @@
 
 namespace Nuxia\MailStorageBundle\Model;
 
-use Nuxia\MailStorageBundle\Entity\MailEntry;
+use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
 
 interface MailEntryManagerInterface
 {
     /**
-     * @return MailEntry
+     * @return AbstractMailEntry
      */
     public function createMailEntry();
 

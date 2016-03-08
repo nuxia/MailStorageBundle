@@ -1,6 +1,6 @@
 services:
     nuxia.mail_storage.storage.manager:
-        class:  "Nuxia\MailStorageBundle\Doctrine\StorageManager"
+        class:  Nuxia\MailStorageBundle\Doctrine\StorageManager
         parent: "nuxia.mail_storage.storage.manager.abstract"
         public: false
         calls:

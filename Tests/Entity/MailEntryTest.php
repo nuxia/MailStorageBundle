@@ -2,27 +2,27 @@
 
 namespace Nuxia\MailStorageBundle\Tests\Entity;
 
-use Nuxia\MailStorageBundle\Entity\MailEntry;
+use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
 
 class MailEntryTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetStatus()
     {
-        $status = MailEntry::STATUS_SENT;
+        $status = DummyMailEntry::STATUS_SENT;
 
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $mailEntry->setStatus($status);
         $this->assertAttributeEquals($status, 'status', $mailEntry);
     }
 
     public function testGetStatus()
     {
-        $status = MailEntry::STATUS_SENT;
-        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Entity\MailEntry');
+        $status = DummyMailEntry::STATUS_SENT;
+        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Entity\DummyMailEntry');
         $property = $reflector->getProperty('status');
         $property->setAccessible(true);
 
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $property->setValue($mailEntry, $status);
         $this->assertEquals($status, $mailEntry->getStatus());
     }
@@ -31,7 +31,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
     {
         $sentAt = new \Datetime();
 
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $mailEntry->setSentAt($sentAt);
         $this->assertAttributeEquals($sentAt, 'sentAt', $mailEntry);
     }
@@ -39,11 +39,11 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
     public function testGetSendAt()
     {
         $sentAt = new \Datetime();
-        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Entity\MailEntry');
+        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Entity\DummyMailEntry');
         $property = $reflector->getProperty('sentAt');
         $property->setAccessible(true);
 
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $property->setValue($mailEntry, $sentAt);
         $this->assertEquals($sentAt, $mailEntry->getSentAt());
     }
@@ -65,7 +65,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
 
     public function testFromSwiftMessageDefaultValues()
     {
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $message = $this->createSwiftMessage();
         $mailEntry->fromSwiftMessage($message, 'fr');
 
@@ -75,7 +75,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($mailEntry->getContentText(), $message->getBody());
         $this->assertNotEmpty($mailEntry->getTo());
         $this->assertNotEmpty($mailEntry->getFrom());
-        $this->assertEquals($mailEntry->getStatus(), MailEntry::STATUS_PENDING);
+        $this->assertEquals($mailEntry->getStatus(), DummyMailEntry::STATUS_PENDING);
         $this->assertEquals($mailEntry->getLanguage(), 'fr');
         $this->assertEquals($mailEntry->getHeader(), $message->getHeaders()->toString());
 
@@ -87,7 +87,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
 
     public function testFromSwiftMessageLanguage()
     {
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $message = $this->createSwiftMessage();
         $message->getHeaders()->addTextHeader('Content-language', 'en');
         $mailEntry->fromSwiftMessage($message, 'fr');
@@ -97,7 +97,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
 
     public function testFromSwiftMessageContentText()
     {
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $message = $this->createSwiftMessage();
         $message->addPart('plain-text', 'text/plain');
         $mailEntry->fromSwiftMessage($message, 'fr');
@@ -107,7 +107,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
 
     public function testFromSwiftMessageHeaders()
     {
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $message = $this->createSwiftMessage();
         $message->getHeaders()->addTextHeader('Content-language', 'en');
         $message->getHeaders()->addTextHeader('X-MailStorage-Object', 'object');
@@ -121,7 +121,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
 
     public function testExtraAddresses()
     {
-        $mailEntry = new MailEntry();
+        $mailEntry = new DummyMailEntry();
         $message = $this->createSwiftMessage();
         $message->setCc('cc@email.com');
         $message->setBcc('bcc@email.com');
@@ -131,4 +131,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($mailEntry->getBcc());
     }
 
+}
+
+class DummyMailEntry extends AbstractMailEntry {
 }

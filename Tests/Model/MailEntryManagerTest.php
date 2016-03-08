@@ -8,16 +8,16 @@ class MailEntryManagerTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateMailEntry()
     {
-        $className = 'Nuxia\MailStorageBundle\Entity\MailEntry';
+        $className = 'Nuxia\MailStorageBundle\Entity\AbstractMailEntry';
         $mailEntryManager = new MailEntryManager();
         $mailEntryManager->setClassName($className);
 
-        $this->assertInstanceOf('Nuxia\MailStorageBundle\Entity\MailEntry', $mailEntryManager->createMailEntry());
+        $this->assertInstanceOf('Nuxia\MailStorageBundle\Entity\AbstractMailEntry', $mailEntryManager->createMailEntry());
     }
 
     public function testSetClassName()
     {
-        $className = 'Nuxia\MailStorageBundle\Entity\MailEntry';
+        $className = 'Nuxia\MailStorageBundle\Entity\AbstractMailEntry';
 
         $mailEntryManager = new MailEntryManager();
         $mailEntryManager->setClassName($className);
@@ -26,7 +26,7 @@ class MailEntryManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClassName()
     {
-        $className = 'Nuxia\MailStorageBundle\Entity\MailEntry';
+        $className = 'Nuxia\MailStorageBundle\Entity\AbstractMailEntry';
         $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Model\MailEntryManager');
         $property = $reflector->getProperty('className');
         $property->setAccessible(true);
