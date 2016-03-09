@@ -20,6 +20,31 @@ composer require nuxia/mail-storage-bundle: "dev-master"
 MyApp\Entity\MailEntry:
     type: "entity"
     table: "your__mail_storage_table"
+    id:
+        id:
+            type: "string"
+            length: "32"
+            generator:
+                strategy: "NONE"
+    indexes:
+        mle_id_i:
+            columns: "id"
+        mle_object_i:
+            columns: "object"
+        mle_object_id_i:
+            columns: "object_id"
+        mle_reference_i:
+            columns: "reference"
+        mle_language_i:
+            columns: "language"
+        mle_subject_i:
+            columns: "subject"
+        mle_status_i:
+            columns: "status"
+        mle_created_att_i:
+            columns: "created_at"
+        mle_sent_at_i:
+            columns: "sent_at"
 ```
 
 ```php
