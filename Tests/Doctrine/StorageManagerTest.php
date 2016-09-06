@@ -41,7 +41,7 @@ class StorageManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->className));
 
         $this->storageManager = new StorageManager($this->mailEntryManager);
-        $this->storageManager->setObjectManager($this->objectManager);
+        $this->storageManager->setDoctrineRegistry($this->objectManager);
     }
 
     public function testCreateMailEntry()

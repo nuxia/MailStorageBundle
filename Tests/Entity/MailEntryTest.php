@@ -3,6 +3,8 @@
 namespace Nuxia\MailStorageBundle\Tests\Entity;
 
 use Nuxia\MailStorageBundle\Entity\AbstractMailEntry;
+use Prophecy\Argument;
+use Prophecy\Prophecy\MethodProphecy;
 
 class MailEntryTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +20,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
     public function testGetStatus()
     {
         $status = DummyMailEntry::STATUS_SENT;
-        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Entity\DummyMailEntry');
+        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Tests\Entity\DummyMailEntry');
         $property = $reflector->getProperty('status');
         $property->setAccessible(true);
 
@@ -39,7 +41,7 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
     public function testGetSendAt()
     {
         $sentAt = new \Datetime();
-        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Entity\DummyMailEntry');
+        $reflector = new \ReflectionClass('Nuxia\MailStorageBundle\Tests\Entity\DummyMailEntry');
         $property = $reflector->getProperty('sentAt');
         $property->setAccessible(true);
 
@@ -109,14 +111,37 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
     {
         $mailEntry = new DummyMailEntry();
         $message = $this->createSwiftMessage();
-        $message->getHeaders()->addTextHeader('Content-language', 'en');
         $message->getHeaders()->addTextHeader('X-MailStorage-Object', 'object');
         $message->getHeaders()->addTextHeader('X-MailStorage-ObjectId', 1);
         $mailEntry->fromSwiftMessage($message, 'fr');
 
-        $this->assertEquals($mailEntry->getLanguage(), 'en');
         $this->assertEquals($mailEntry->getObject(), 'object');
         $this->assertEquals($mailEntry->getObjectId(), 1);
+    }
+
+    public function testFromSwiftMessageUnExistingHeaders()
+    {
+        //test mal écrit phpunit ne pas tester si une méthode qui n'existe pas sur l'objet va être appelé.. A revoir
+        $mailEntry = new DummyMailEntry();
+        $message = $this->createSwiftMessage();
+        $message->getHeaders()->addTextHeader('X-MailStorage-UnknownMethod', 'dummyvalue');
+        try {
+            $mailEntry->fromSwiftMessage($message, 'fr');
+        } catch (\Exception $e) {
+            $this->fail('Unknown method should not be called');
+        }
+
+        $this->assertTrue(true);
+    }
+
+    public function testFromSwiftMessageClearHeaders()
+    {
+        $mailEntry = new DummyMailEntry();
+        $message = $this->createSwiftMessage();
+        $message->getHeaders()->addTextHeader('X-MailStorage-Object', 'object');
+        $mailEntry->fromSwiftMessage($message, 'fr');
+
+        $this->assertFalse($message->getHeaders()->has('X-MailStorage-Object'), 'object');
     }
 
     public function testExtraAddresses()
@@ -130,7 +155,6 @@ class MailEntryTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($mailEntry->getCc());
         $this->assertNotEmpty($mailEntry->getBcc());
     }
-
 }
 
 class DummyMailEntry extends AbstractMailEntry {

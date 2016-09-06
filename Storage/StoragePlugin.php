@@ -48,7 +48,9 @@ class StoragePlugin implements \Swift_Events_SendListener
     public function sendPerformed(\Swift_Events_SendEvent $evt)
     {
         if (!$this->isSpoolTransport($evt->getTransport())) {
-            $this->mailEntry->setStatus(AbstractMailEntry::STATUS_SENT);
+            if (AbstractMailEntry::STATUS_PENDING === $this->mailEntry->getStatus()) {
+                $this->mailEntry->setStatus(AbstractMailEntry::STATUS_SENT);
+            }
             $this->mailEntry->setSentAt(new \Datetime());
             $this->storageManager->store($this->mailEntry);
         }

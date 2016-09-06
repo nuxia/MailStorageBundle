@@ -2,6 +2,7 @@
 
 namespace Nuxia\MailStorageBundle\Entity;
 
+use Doctrine\Common\Util\Inflector;
 use Nuxia\MailStorageBundle\SwiftMessageUtils;
 
 abstract class AbstractMailEntry
@@ -29,77 +30,77 @@ abstract class AbstractMailEntry
     /**
      * @var string
      */
-    private $object;
+    protected $object;
 
     /**
      * @var integer
      */
-    private $objectId;
+    protected $objectId;
 
     /**
      * @var string
      */
-    private $reference;
+    protected $reference;
 
     /**
      * @var string
      */
-    private $language;
+    protected $language;
 
     /**
      * @var string
      */
-    private $header;
+    protected $header;
 
     /**
      * @var array
      */
-    private $from;
+    protected $from;
 
     /**
      * @var array
      */
-    private $to;
+    protected $to;
 
     /**
      * @var array
      */
-    private $cc;
+    protected $cc;
 
     /**
      * @var array
      */
-    private $bcc;
+    protected $bcc;
 
     /**
      * @var string
      */
-    private $subject;
+    protected $subject;
 
     /**
      * @var string
      */
-    private $content;
+    protected $content;
 
     /**
      * @var string
      */
-    private $contentText;
+    protected $contentText;
 
     /**
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * @var \DateTime
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      */
-    private $sentAt;
+    protected $sentAt;
 
     public function __construct()
     {
@@ -457,11 +458,14 @@ abstract class AbstractMailEntry
             }
         }
 
-        foreach (array('X-MailStorage-Object', 'X-MailStorage-ObjectId', 'X-MailStorage-Reference') as $headerKey) {
-            if ($headerSet->has($headerKey)) {
-                $this->{'set' . explode('-', $headerKey)[2]}($headerSet->get($headerKey)->getFieldBody());
-                $headerSet->remove($headerKey);
+        $headerSetPattern = strtolower('X-MailStorage-');
+
+        foreach (preg_grep('/^' . $headerSetPattern . '.*$/', $headerSet->listAll()) as $headerKey) {
+            $method = 'set'. Inflector::camelize(substr($headerKey, strlen($headerSetPattern)));
+            if (is_callable(array($this, $method))) {
+                $this->$method($headerSet->get($headerKey)->getFieldBody());
             }
+            $headerSet->remove($headerKey);
         }
         $this->setHeader($message->getHeaders()->toString());
 
